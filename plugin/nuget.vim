@@ -51,7 +51,7 @@ function! s:PackageSearch(query) abort
   let result = webapi#http#get('https://api-v2v3search-0.nuget.org/query?q='.a:query.'&take=100&includeDelisted=false')
   let s:action = 'search'
   let s:actions = []
-  for package in eval(result.content).data
+  for package in eval(substitute(substitute(substitute(result.content, '\r\n', '', 'g'), 'true', '1', 'g'), 'false', '0', 'g')).data
     let s:actions = s:actions + [package.id]
   endfor
   call fzf#run({
